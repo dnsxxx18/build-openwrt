@@ -39,6 +39,6 @@ jobs:
     - name: 准备结束
       uses: actions/checkout@v2
 
-    - name: SSH远程连接（若打开了此功能,在此转圈2分钟还展开不了,请看《SSH连接教程》）
+    - name: SSH远程连接（请等待SSH链接出现）
       uses: 281677160/debugger-action@master
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh' && github.event.inputs.ssh  != 'false')
