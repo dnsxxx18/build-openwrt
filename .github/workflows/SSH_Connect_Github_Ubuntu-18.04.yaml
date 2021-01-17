@@ -1,0 +1,44 @@
+#
+#
+# 感谢p3terx大神的一键编译脚本
+# 
+# Copyright (C) 2019 P3TERX <https://p3terx.com>
+# <https://github.com/P3TERX/Actions-OpenWrt.git>
+#
+name: SSH连接到github Ubuntu-18.04
+on:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH远程'
+        required: true
+        default: 'ssh'
+
+#定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
+#  schedule:
+#    - cron: 0 8 */5 * *
+
+env: 
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  SCKEY: ${{ secrets.SCKEY }}
+  TZ: Asia/Shanghai
+  GITHUB_RELEASE: 
+
+jobs: 
+  build:
+    runs-on: Ubuntu-20.04
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    name: SSH连接到github
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [Project_x86_64]
+
+    steps:
+    - name: 准备结束
+      uses: actions/checkout@v2
+
+    - name: SSH远程连接（请等待SSH链接出现）
+      uses: 281677160/debugger-action@master
+      if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh' && github.event.inputs.ssh  != 'false')
